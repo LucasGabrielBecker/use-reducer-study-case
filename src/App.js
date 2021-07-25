@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer } from 'react'
+import { Form, Logged } from './components'
+import { loginReducer, initialState } from './reducer'
+import './index.css'
 
 function App() {
+  const [state, dispatch] = useReducer(loginReducer, initialState)
+
+  if (state.logged)
+    return <Logged username={state.username} dispatch={dispatch} />
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {state.error && <h2 className="error">{state.error}</h2>}
+      <Form dispatch={dispatch} />
+
+      {state.loading && <h4>Loading...</h4>}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
